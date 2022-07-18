@@ -49,6 +49,10 @@
                else if (answer.department === 'Update Employee Roles') {
                 updateEmployee()
                }
+               else if (answer.department === 'Quit') {
+                 process.abort()
+               }
+
             })
             
         }
