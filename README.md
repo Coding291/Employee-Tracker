@@ -23,8 +23,8 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 # Screenshots 
 
-![Getting Started](./images/Screen%20Shot%202022-07-18%20at%203.22.09%20PM.png)
-![Getting Started](./images/Screen%20Shot%202022-07-18%20at%203.22.25%20PM.png)
+![Getting Started](./images/Screen%20Shot%202022-07-22%20at%208.04.56%20PM.png)
+![Getting Started](./images/Screen%20Shot%202022-07-22%20at%208.05.15%20PM.png)
 
 # Walkthorugh Video
 

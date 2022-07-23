@@ -58,7 +58,7 @@
         }
 
 const viewAllEmployees = () => {
-  db.query(`SELECT * FROM employees`, (err, row) => {
+  db.query(`SELECT employees.id, employees.first_name, employees.last_name, roles.title AS role, CONCAT(manager.first_name , "  " , manager.last_name) AS manager FROM employees LEFT JOIN roles ON employees.role_id = roles.id LEFT JOIN employees manager ON employees.manager_id = manager.id`, (err, row) => {
     if (err) {
       console.log(err);
     }
@@ -79,7 +79,7 @@ const viewAllDepartments = () => {
 }
 
 const viewAllRoles = () => {
-  db.query(`SELECT * FROM roles`, (err, row) => {
+  db.query(`SELECT roles.id, roles.title, roles.salary, department.name AS department FROM roles LEFT JOIN department ON roles.department_id = department.id`, (err, row) => {
     if (err) {
       console.log(err);
     }
@@ -161,20 +161,21 @@ const addEmployee = () => {
   db.query(`SELECT * FROM roles`, (err, row) => {
     if (err) {
       console.log(err);
-    }})
-  const list = []
+
+    }
+    const list = []
     for ( var i = 0; i < row.length; i++) {
       console.log(row[i])
-      list.push({name:row[i].name, value:row[i].id})
+      list.push({name:row[i].title , value:row[i].id})
     }
-  db.query(`SELECT * FROM employees`, (err, row) => {
+    db.query(`SELECT * FROM employees`, (err, row) => {
       if (err) {
         console.log(err);
-      }})
-  const list2 = []
+      }
+      const list2 = []
       for ( var i = 0; i < row.length; i++) {
         console.log(row[i])
-        list2.push({name:row[i].name, value:row[i].id})
+        list2.push({name:row[i].first_name + ' ' + row[i].last_name, value:row[i].id})
       }
 
   inquirer.prompt ([
@@ -202,38 +203,72 @@ const addEmployee = () => {
      choices: list2
     }
   ])
-  .then(() => {
-    let sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('${answers.firstname}', ${answers.lastname}, '${answers.department}', '${answers.managerID}')`
+  .then((answers) => {
+    let sql = `INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES ('${answers.firstname}', '${answers.lastname}', '${answers.department}', '${answers.managerID}')`
     db.query(sql, (err, row) => {
       if (err) {
         console.log(err);
       }
-      console.table(row);
+      console.log("Successfully added!");
       data();
     });
   })
+    
+    })
+  
 
+  })
+  
+  
       
 }
 
 const updateEmployee = () => {
-  inquirer.prompt ([
-    {
-      type: 'input',
-      name: 'firstname',
-      message: 'Which employees role you want to update?'
+  db.query(`SELECT * FROM employees`, (err, row) => {
+    if (err) {
+      console.log(err);
     }
-   
-  ])
-  .then(() => {
-    db.query(``, (err, row) => {
+    const list2 = []
+    for ( var i = 0; i < row.length; i++) {
+      console.log(row[i])
+      list2.push({name:row[i].first_name + ' ' + row[i].last_name, value:row[i].id})
+    }
+    db.query(`SELECT * FROM roles`, (err, row) => {
       if (err) {
         console.log(err);
       }
-      console.table(row);
-      data();
-    });
+      const list3 = []
+      for ( var i = 0; i < row.length; i++) {
+        console.log(row[i])
+        list3.push({name:row[i].title, value:row[i].id})
+      }
+    inquirer.prompt ([
+      {
+        type: 'list',
+        name: 'updateEmployee',
+        message: 'Which employees role you want to update?',
+        choices: list2
+      },
+      {
+        type: 'list',
+        name: 'updateRole',
+        message: 'Which role you want to update?',
+        choices: list3
+
+      }
+     
+    ])
+    .then((answers) => {
+      db.query(`UPDATE employees SET role_id = '${answers.updateRole}' WHERE id = '${answers.updateEmployee}'`, (err, row) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log("Updated Successfully");
+        data();
+      });
+    })
   })
+})
 
       
 }
