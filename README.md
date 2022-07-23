@@ -26,7 +26,6 @@ THEN I am prompted to select an employee to update and their new role and this i
 ![Getting Started](./images/Screen%20Shot%202022-07-22%20at%208.04.56%20PM.png)
 ![Getting Started](./images/Screen%20Shot%202022-07-22%20at%208.05.15%20PM.png)
 
-# Walkthorugh Video
+# Walkthrough Video
 
-
-
+https://drive.google.com/file/d/1JHTVuDTaSGKwXz0gkKSQ8BExhoxUEFIf/view
